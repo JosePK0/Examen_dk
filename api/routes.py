@@ -70,22 +70,42 @@ def listar_tickets(
     """
     Lista todos los tickets.
     """
-    use_case = ListarTicketsUseCase(ticket_repo)
-    tickets = use_case.ejecutar()
-    
-    return [
-        TicketResponse(
-            ticket_id=t.ticket_id,
-            usuario_id=t.usuario_id,
-            tecnico_id=t.tecnico_id,
-            descripcion=t.descripcion,
-            prioridad=t.prioridad,
-            estado=t.estado,
-            created_at=t.created_at,
-            updated_at=t.updated_at
+    import traceback
+    try:
+        use_case = ListarTicketsUseCase(ticket_repo)
+        tickets = use_case.ejecutar()
+        
+        result = []
+        for t in tickets:
+            try:
+                result.append(
+                    TicketResponse(
+                        ticket_id=t.ticket_id,
+                        usuario_id=t.usuario_id,
+                        tecnico_id=t.tecnico_id,
+                        descripcion=t.descripcion,
+                        prioridad=t.prioridad,
+                        estado=t.estado,
+                        created_at=t.created_at,
+                        updated_at=t.updated_at
+                    )
+                )
+            except Exception as e:
+                # Si hay un error con un ticket específico, continuar con los demás
+                import logging
+                logging.error(f"Error al procesar ticket {t.ticket_id}: {str(e)}")
+                logging.error(traceback.format_exc())
+                continue
+        
+        return result
+    except Exception as e:
+        import logging
+        logging.error(f"Error al listar tickets: {str(e)}")
+        logging.error(traceback.format_exc())
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error al listar tickets: {str(e)}"
         )
-        for t in tickets
-    ]
 
 
 @router.get("/{ticket_id}", response_model=TicketResponse)
@@ -121,7 +141,8 @@ def obtener_ticket(
 def actualizar_ticket(
     ticket_id: int,
     ticket_data: TicketUpdate,
-    ticket_repo: ITicketRepository = Depends(get_ticket_repository)
+    ticket_repo: ITicketRepository = Depends(get_ticket_repository),
+    usuario_repo: IUsuarioRepository = Depends(get_usuario_repository)
 ):
     """
     Actualiza un ticket existente.
@@ -130,6 +151,7 @@ def actualizar_ticket(
     - **descripcion**: Nueva descripción
     - **prioridad**: Nueva prioridad
     - **estado**: Nuevo estado
+    - **tecnico_id**: ID del técnico a asignar (None para desasignar)
     """
     try:
         use_case_obtener = ObtenerTicketUseCase(ticket_repo)
@@ -153,9 +175,23 @@ def actualizar_ticket(
             use_case_estado = ActualizarEstadoTicketUseCase(ticket_repo)
             ticket = use_case_estado.ejecutar(ticket_id, ticket_data.estado)
         
-        # Si solo se actualizó descripción, guardar cambios
-        if ticket_data.descripcion is not None and ticket_data.prioridad is None and ticket_data.estado is None:
+        # Actualizar técnico si se proporciona en el request
+        # El frontend siempre enviará tecnico_id, None significa desasignar
+        if hasattr(ticket_data, 'tecnico_id') and ticket_data.tecnico_id is not None and ticket_data.tecnico_id == 0:
+            # Desasignar técnico (0 significa desasignar)
+            ticket.tecnico_id = None
             ticket = ticket_repo.actualizar(ticket)
+        elif hasattr(ticket_data, 'tecnico_id') and ticket_data.tecnico_id is not None and ticket_data.tecnico_id > 0:
+            # Asignar nuevo técnico usando el caso de uso existente
+            use_case_asignar = AsignarTecnicoUseCase(ticket_repo, usuario_repo)
+            ticket = use_case_asignar.ejecutar(ticket_id, ticket_data.tecnico_id)
+        
+        # Si solo se actualizó descripción (sin otros campos), guardar cambios
+        if (ticket_data.descripcion is not None and ticket_data.prioridad is None and 
+            ticket_data.estado is None):
+            # Verificar si tecnico_id no fue enviado
+            if not hasattr(ticket_data, 'tecnico_id') or ticket_data.tecnico_id is None:
+                ticket = ticket_repo.actualizar(ticket)
         
         return TicketResponse(
             ticket_id=ticket.ticket_id,
@@ -183,9 +219,15 @@ def asignar_tecnico(
     
     - **tecnico_id**: ID del técnico a asignar
     """
+    import logging
+    import traceback
+    
     try:
+        logging.info(f"Asignando técnico {request.tecnico_id} al ticket {ticket_id}")
         use_case = AsignarTecnicoUseCase(ticket_repo, usuario_repo)
         ticket = use_case.ejecutar(ticket_id, request.tecnico_id)
+        
+        logging.info(f"Ticket actualizado - tecnico_id: {ticket.tecnico_id}, estado: {ticket.estado}")
         
         return TicketResponse(
             ticket_id=ticket.ticket_id,
@@ -198,7 +240,15 @@ def asignar_tecnico(
             updated_at=ticket.updated_at
         )
     except ValueError as e:
+        logging.error(f"Error de validación al asignar técnico: {str(e)}")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except Exception as e:
+        logging.error(f"Error inesperado al asignar técnico: {str(e)}")
+        logging.error(traceback.format_exc())
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error al asignar técnico: {str(e)}"
+        )
 
 
 @router.get("/reporte/prioridad/{prioridad}", response_model=List[TicketResponse])

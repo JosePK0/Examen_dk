@@ -59,8 +59,8 @@ class TicketModel(Base):
     usuario_id = Column("usuarioID", Integer, ForeignKey("usuarios.IDusuario", ondelete="CASCADE"), nullable=False)
     tecnico_id = Column("tecnicoID", Integer, ForeignKey("usuarios.IDusuario", ondelete="SET NULL"), nullable=True)
     descripcion = Column(Text, nullable=False)
-    prioridad = Column(Enum(PrioridadEnum), default=PrioridadEnum.MEDIA, nullable=False)
-    estado = Column(Enum(EstadoEnum), default=EstadoEnum.ABIERTO, nullable=False)
+    prioridad = Column(Enum(PrioridadEnum, values_callable=lambda x: [e.value for e in PrioridadEnum]), default=PrioridadEnum.MEDIA, nullable=False)
+    estado = Column(Enum(EstadoEnum, values_callable=lambda x: [e.value for e in EstadoEnum]), default=EstadoEnum.ABIERTO, nullable=False)
     created_at = Column("createdAt", DateTime, server_default=func.now())
     updated_at = Column("updatedAt", DateTime, server_default=func.now(), onupdate=func.now())
     

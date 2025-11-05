@@ -4,7 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HelpDeskPro - Sistema de Gestión</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,65 +42,171 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 25%, #4f46e5 50%, #7c3aed 75%, #6366f1 100%);
+            background-attachment: fixed;
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
+            color: var(--gray-900);
+            line-height: 1.65;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.99);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.5);
             overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #6366f1 100%);
             color: white;
-            padding: 30px;
+            padding: 60px 40px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            50% { transform: translateY(-20px) translateX(20px); }
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 3.5em;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.03em;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.25em;
+            font-weight: 400;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.01em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
 
         .tabs {
             display: flex;
-            background: #f8f9fa;
-            border-bottom: 2px solid #e0e0e0;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0 20px;
         }
 
         .tab {
             flex: 1;
-            padding: 20px;
+            padding: 20px 30px;
             text-align: center;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
+            font-size: 1.05em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-bottom: 3px solid transparent;
+            color: var(--gray-600);
+            position: relative;
+        }
+
+        .tab::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .tab:hover {
-            background: #e9ecef;
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--primary);
         }
 
         .tab.active {
             background: white;
-            border-bottom-color: #667eea;
-            color: #667eea;
+            color: var(--primary);
+        }
+
+        .tab.active::before {
+            width: 80%;
         }
 
         .content {
-            padding: 30px;
+            padding: 40px;
+            background: white;
         }
 
         .tab-content {
             display: none;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .tab-content.active {
@@ -78,229 +214,410 @@
         }
 
         .section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.1);
+            border: 1px solid var(--gray-200);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.05);
+            transform: translateY(-4px);
+            border-color: var(--gray-300);
+        }
+
+        .section:hover::before {
+            transform: scaleX(1);
         }
 
         .section h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.5em;
+            color: var(--gray-900);
+            margin-bottom: 28px;
+            font-size: 1.85em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            letter-spacing: -0.02em;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary) 0%, transparent 100%);
+            margin-left: 10px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 24px;
+            position: relative;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #333;
+            margin-bottom: 10px;
+            color: var(--gray-800);
             font-weight: 600;
+            font-size: 0.9em;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            opacity: 0.85;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s;
+            padding: 16px 18px;
+            border: 1.5px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--gray-50);
+            color: var(--gray-900);
+            font-family: inherit;
+        }
+
+        input:hover, select:hover, textarea:hover {
+            border-color: var(--gray-400);
+            background: white;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08), 0 4px 12px rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: var(--gray-400);
         }
 
         textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 120px;
+            line-height: 1.6;
         }
 
         .btn {
-            padding: 12px 25px;
+            padding: 14px 32px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             margin-right: 10px;
             margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.02em;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn:active {
+            transform: translateY(0px) scale(0.98);
         }
 
         .btn-primary {
-            background: #667eea;
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
             color: white;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
         }
 
         .btn-primary:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+            background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
         }
 
         .btn-success {
-            background: #28a745;
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
             color: white;
         }
 
         .btn-success:hover {
-            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
         }
 
         .btn-danger {
-            background: #dc3545;
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
             color: white;
         }
 
         .btn-danger:hover {
-            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
         }
 
         .btn-warning {
-            background: #ffc107;
-            color: #333;
+            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+            color: white;
         }
 
         .btn-warning:hover {
-            background: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
         }
 
         .btn-secondary {
-            background: #6c757d;
+            background: var(--gray-600);
             color: white;
         }
 
         .btn-secondary:hover {
-            background: #5a6268;
+            background: var(--gray-700);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .table-container {
             overflow-x: auto;
-            margin-top: 20px;
+            margin-top: 28px;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.1);
+            border: 1px solid var(--gray-200);
+            background: white;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            border-radius: 8px;
-            overflow: hidden;
         }
 
         th, td {
-            padding: 15px;
+            padding: 20px 24px;
             text-align: left;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid var(--gray-200);
         }
 
         th {
-            background: #667eea;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
             color: white;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        tr:hover {
-            background: #f8f9fa;
+        tbody tr {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 3px solid transparent;
+        }
+
+        tbody tr:hover {
+            background: linear-gradient(90deg, var(--gray-50) 0%, white 100%);
+            border-left-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        td {
+            font-weight: 500;
+            color: var(--gray-700);
         }
 
         .badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            display: inline-block;
+            padding: 7px 16px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
         .badge-prioridad-baja {
-            background: #d4edda;
-            color: #155724;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
         }
 
         .badge-prioridad-media {
-            background: #fff3cd;
-            color: #856404;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
         }
 
         .badge-prioridad-alta {
-            background: #f8d7da;
-            color: #721c24;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
         }
 
         .badge-prioridad-critica {
-            background: #dc3545;
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
             color: white;
         }
 
         .badge-estado-abierto {
-            background: #cfe2ff;
-            color: #084298;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
         }
 
         .badge-estado-en_proceso {
-            background: #fff3cd;
-            color: #856404;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
         }
 
         .badge-estado-cerrado {
-            background: #d1e7dd;
-            color: #0f5132;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
         }
 
         .badge-rol-usuario {
-            background: #cfe2ff;
-            color: #084298;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
         }
 
         .badge-rol-tecnico {
-            background: #fff3cd;
-            color: #856404;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
         }
 
         .badge-rol-admin {
-            background: #dc3545;
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
             color: white;
         }
 
         .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            padding: 20px 28px;
+            border-radius: 14px;
+            margin-bottom: 28px;
             display: none;
+            animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 5px solid;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+            color: #065f46;
+            border-left-color: var(--success);
         }
 
         .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+            color: #991b1b;
+            border-left-color: var(--danger);
         }
 
         .actions {
             display: flex;
-            gap: 5px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 8px 16px;
+            font-size: 13px;
             margin: 0;
+        }
+
+        .form-error {
+            display: block;
+            color: var(--danger);
+            font-size: 0.85em;
+            margin-top: 6px;
+            min-height: 20px;
+            font-weight: 500;
+        }
+
+        input:invalid:not(:placeholder-shown),
+        textarea:invalid:not(:placeholder-shown),
+        select:invalid:not(:placeholder-shown) {
+            border-color: var(--danger);
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+
+        input:valid:not(:placeholder-shown),
+        textarea:valid:not(:placeholder-shown),
+        select:valid:not(:placeholder-shown) {
+            border-color: var(--success);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
         }
 
         .loading {
             text-align: center;
-            padding: 20px;
-            color: #667eea;
+            padding: 40px 20px;
+            color: var(--primary);
             font-weight: 600;
+            font-size: 1.1em;
         }
 
         .hidden {
@@ -309,15 +626,57 @@
 
         .form-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        small {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.85em;
+            color: var(--gray-500);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                border-radius: 16px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎫 HelpDeskPro</h1>
+            <h1>HelpDeskPro</h1>
             <p>Sistema de Gestión de Incidencias</p>
         </div>
 
@@ -339,15 +698,23 @@
                         <input type="hidden" id="usuario-id" value="">
                         <div class="form-group">
                             <label for="usuario-nombre">Nombre:</label>
-                            <input type="text" id="usuario-nombre" required>
+                            <input type="text" id="usuario-nombre" required minlength="2" maxlength="100" 
+                                   pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" 
+                                   title="Solo letras y espacios (mínimo 2 caracteres)">
+                            <small class="form-error" id="usuario-nombre-error"></small>
                         </div>
                         <div class="form-group">
                             <label for="usuario-correo">Correo:</label>
-                            <input type="email" id="usuario-correo" required>
+                            <input type="email" id="usuario-correo" required maxlength="150" 
+                                   pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                                   title="Ingrese un correo electrónico válido">
+                            <small class="form-error" id="usuario-correo-error"></small>
                         </div>
                         <div class="form-group">
                             <label for="usuario-contrasena">Contraseña:</label>
-                            <input type="password" id="usuario-contrasena">
+                            <input type="password" id="usuario-contrasena" minlength="6" 
+                                   title="Mínimo 6 caracteres">
+                            <small class="form-error" id="usuario-contrasena-error"></small>
                         </div>
                         <div class="form-group">
                             <label for="usuario-rol">Rol:</label>
@@ -396,12 +763,16 @@
                     <form id="ticket-form">
                         <input type="hidden" id="ticket-id" value="">
                         <div class="form-group">
-                            <label for="ticket-usuario-id">ID Usuario:</label>
-                            <input type="number" id="ticket-usuario-id" required>
+                            <label for="ticket-usuario-id">Usuario:</label>
+                            <select id="ticket-usuario-id" required>
+                                <option value="">Cargando usuarios...</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="ticket-descripcion">Descripción:</label>
-                            <textarea id="ticket-descripcion" required></textarea>
+                            <textarea id="ticket-descripcion" required minlength="10" maxlength="2000" 
+                                      placeholder="Describe el problema detalladamente (mínimo 10 caracteres)"></textarea>
+                            <small class="form-error" id="ticket-descripcion-error"></small>
                         </div>
                         <div class="form-group">
                             <label for="ticket-prioridad">Prioridad:</label>
@@ -421,8 +792,11 @@
                             </select>
                         </div>
                         <div class="form-group" id="ticket-tecnico-group">
-                            <label for="ticket-tecnico-id">ID Técnico (opcional):</label>
-                            <input type="number" id="ticket-tecnico-id">
+                            <label for="ticket-tecnico-id">Técnico (opcional):</label>
+                            <select id="ticket-tecnico-id">
+                                <option value="">Sin asignar</option>
+                                <option value="">Cargando técnicos...</option>
+                            </select>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary" id="ticket-submit-btn">Crear Ticket</button>
@@ -440,11 +814,11 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Usuario ID</th>
+                                    <th>Usuario</th>
                                     <th>Descripción</th>
                                     <th>Prioridad</th>
                                     <th>Estado</th>
-                                    <th>Técnico ID</th>
+                                    <th>Técnico</th>
                                     <th>Creado</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -475,6 +849,8 @@
             if (tab === 'usuarios') {
                 loadUsuarios();
             } else {
+                loadUsuariosForTickets();
+                loadTecnicosForTickets();
                 loadTickets();
             }
         }
@@ -533,15 +909,126 @@
             `).join('');
         }
 
+        // Funciones de validación
+        function validarNombre(nombre) {
+            const errorEl = document.getElementById('usuario-nombre-error');
+            if (!nombre || nombre.trim().length < 2) {
+                errorEl.textContent = 'El nombre debe tener al menos 2 caracteres';
+                return false;
+            }
+            if (nombre.length > 100) {
+                errorEl.textContent = 'El nombre no puede exceder 100 caracteres';
+                return false;
+            }
+            if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre.trim())) {
+                errorEl.textContent = 'El nombre solo puede contener letras y espacios';
+                return false;
+            }
+            errorEl.textContent = '';
+            return true;
+        }
+
+        function validarCorreo(correo) {
+            const errorEl = document.getElementById('usuario-correo-error');
+            if (!correo) {
+                errorEl.textContent = 'El correo es requerido';
+                return false;
+            }
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(correo)) {
+                errorEl.textContent = 'Ingrese un correo electrónico válido';
+                return false;
+            }
+            if (correo.length > 150) {
+                errorEl.textContent = 'El correo no puede exceder 150 caracteres';
+                return false;
+            }
+            errorEl.textContent = '';
+            return true;
+        }
+
+        function validarContrasena(contrasena, esCreacion) {
+            const errorEl = document.getElementById('usuario-contrasena-error');
+            if (esCreacion) {
+                if (!contrasena || contrasena.length < 6) {
+                    errorEl.textContent = 'La contraseña debe tener al menos 6 caracteres';
+                    return false;
+                }
+            } else {
+                if (contrasena && contrasena.length > 0 && contrasena.length < 6) {
+                    errorEl.textContent = 'La contraseña debe tener al menos 6 caracteres';
+                    return false;
+                }
+            }
+            errorEl.textContent = '';
+            return true;
+        }
+
+        function validarDescripcionTicket(descripcion) {
+            const errorEl = document.getElementById('ticket-descripcion-error');
+            if (!descripcion || descripcion.trim().length < 10) {
+                errorEl.textContent = 'La descripción debe tener al menos 10 caracteres';
+                return false;
+            }
+            if (descripcion.length > 2000) {
+                errorEl.textContent = 'La descripción no puede exceder 2000 caracteres';
+                return false;
+            }
+            errorEl.textContent = '';
+            return true;
+        }
+
+        // Agregar validaciones en tiempo real
+        document.addEventListener('DOMContentLoaded', function() {
+            // Validación de nombre
+            const nombreInput = document.getElementById('usuario-nombre');
+            if (nombreInput) {
+                nombreInput.addEventListener('blur', function() {
+                    validarNombre(this.value);
+                });
+            }
+
+            // Validación de correo
+            const correoInput = document.getElementById('usuario-correo');
+            if (correoInput) {
+                correoInput.addEventListener('blur', function() {
+                    validarCorreo(this.value);
+                });
+            }
+
+            // Validación de contraseña
+            const contrasenaInput = document.getElementById('usuario-contrasena');
+            if (contrasenaInput) {
+                contrasenaInput.addEventListener('blur', function() {
+                    const esCreacion = !document.getElementById('usuario-id').value;
+                    validarContrasena(this.value, esCreacion);
+                });
+            }
+
+            // Validación de descripción de ticket
+            const descripcionInput = document.getElementById('ticket-descripcion');
+            if (descripcionInput) {
+                descripcionInput.addEventListener('blur', function() {
+                    validarDescripcionTicket(this.value);
+                });
+            }
+        });
+
         // Crear/Actualizar usuario
         document.getElementById('usuario-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const usuarioId = document.getElementById('usuario-id').value;
-            const nombre = document.getElementById('usuario-nombre').value;
-            const correo = document.getElementById('usuario-correo').value;
+            const nombre = document.getElementById('usuario-nombre').value.trim();
+            const correo = document.getElementById('usuario-correo').value.trim();
             const contrasena = document.getElementById('usuario-contrasena').value;
             const rol = document.getElementById('usuario-rol').value;
+
+            // Validaciones
+            const esCreacion = !usuarioId;
+            if (!validarNombre(nombre)) return;
+            if (!validarCorreo(correo)) return;
+            if (!validarContrasena(contrasena, esCreacion)) return;
 
             try {
                 if (usuarioId) {
@@ -655,21 +1142,81 @@
 
         // ==================== TICKETS ====================
 
+        // Cargar usuarios para el dropdown
+        let usuariosList = [];
+        let tecnicosList = [];
+
+        async function loadUsuariosForTickets() {
+            try {
+                const response = await fetch(`${API_USUARIOS}/`);
+                if (response.ok) {
+                    usuariosList = await response.json();
+                    populateUsuarioDropdown();
+                    populateTecnicoDropdown();
+                }
+            } catch (error) {
+                console.error('Error al cargar usuarios:', error);
+            }
+        }
+
+        async function loadTecnicosForTickets() {
+            try {
+                const response = await fetch(`${API_USUARIOS}/tecnicos/list`);
+                if (response.ok) {
+                    tecnicosList = await response.json();
+                    populateTecnicoDropdown();
+                }
+            } catch (error) {
+                console.error('Error al cargar técnicos:', error);
+            }
+        }
+
+        function populateUsuarioDropdown() {
+            const select = document.getElementById('ticket-usuario-id');
+            select.innerHTML = '<option value="">Seleccione un usuario</option>';
+            
+            usuariosList.forEach(usuario => {
+                const option = document.createElement('option');
+                option.value = usuario.usuario_id;
+                option.textContent = `${usuario.nombre} (${usuario.correo}) - ${usuario.rol}`;
+                select.appendChild(option);
+            });
+        }
+
+        function populateTecnicoDropdown() {
+            const select = document.getElementById('ticket-tecnico-id');
+            select.innerHTML = '<option value="">Sin asignar</option>';
+            
+            tecnicosList.forEach(tecnico => {
+                const option = document.createElement('option');
+                option.value = tecnico.usuario_id;
+                option.textContent = `${tecnico.nombre} (${tecnico.correo})`;
+                select.appendChild(option);
+            });
+        }
+
         // Cargar tickets
         async function loadTickets() {
             try {
                 const response = await fetch(`${API_TICKETS}/`);
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ detail: `HTTP ${response.status}: ${response.statusText}` }));
+                    throw new Error(errorData.detail || `Error ${response.status}`);
+                }
+                
                 const tickets = await response.json();
-                displayTickets(tickets);
+                await displayTickets(tickets);
             } catch (error) {
+                console.error('Error completo:', error);
                 showAlert('Error al cargar tickets: ' + error.message, 'error');
                 document.getElementById('tickets-tbody').innerHTML = 
-                    '<tr><td colspan="8" class="loading">Error al cargar tickets</td></tr>';
+                    `<tr><td colspan="8" class="loading">Error: ${error.message}</td></tr>`;
             }
         }
 
         // Mostrar tickets
-        function displayTickets(tickets) {
+        async function displayTickets(tickets) {
             const tbody = document.getElementById('tickets-tbody');
             
             if (!tickets || tickets.length === 0) {
@@ -677,22 +1224,49 @@
                 return;
             }
 
-            tbody.innerHTML = tickets.map(ticket => `
+            // Cargar usuarios y técnicos si no están cargados
+            if (usuariosList.length === 0) {
+                await loadUsuariosForTickets();
+            }
+            if (tecnicosList.length === 0) {
+                await loadTecnicosForTickets();
+            }
+
+            // Crear un mapa de usuarios por ID para búsqueda rápida
+            const usuariosMap = {};
+            usuariosList.forEach(usuario => {
+                usuariosMap[usuario.usuario_id] = usuario;
+            });
+
+            // Crear un mapa de técnicos por ID
+            const tecnicosMap = {};
+            tecnicosList.forEach(tecnico => {
+                tecnicosMap[tecnico.usuario_id] = tecnico;
+            });
+
+            tbody.innerHTML = tickets.map(ticket => {
+                const usuario = usuariosMap[ticket.usuario_id];
+                const nombreUsuario = usuario ? usuario.nombre : `Usuario ID: ${ticket.usuario_id}`;
+                
+                const tecnico = ticket.tecnico_id ? tecnicosMap[ticket.tecnico_id] : null;
+                const nombreTecnico = tecnico ? tecnico.nombre : (ticket.tecnico_id ? `Técnico ID: ${ticket.tecnico_id}` : 'Sin asignar');
+                
+                return `
                 <tr>
                     <td>${ticket.ticket_id}</td>
-                    <td>${ticket.usuario_id}</td>
+                    <td>${nombreUsuario}</td>
                     <td>${ticket.descripcion.substring(0, 50)}${ticket.descripcion.length > 50 ? '...' : ''}</td>
                     <td><span class="badge badge-prioridad-${ticket.prioridad}">${ticket.prioridad.toUpperCase()}</span></td>
                     <td><span class="badge badge-estado-${ticket.estado}">${ticket.estado.replace('_', ' ').toUpperCase()}</span></td>
-                    <td>${ticket.tecnico_id || 'Sin asignar'}</td>
+                    <td>${nombreTecnico}</td>
                     <td>${new Date(ticket.created_at).toLocaleString()}</td>
                     <td class="actions">
                         <button class="btn btn-warning btn-sm" onclick="editTicket(${ticket.ticket_id})">Editar</button>
-                        <button class="btn btn-success btn-sm" onclick="assignTechnician(${ticket.ticket_id})">Asignar Técnico</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteTicket(${ticket.ticket_id})">Eliminar</button>
                     </td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
         }
 
         // Crear/Actualizar ticket
@@ -701,10 +1275,18 @@
             
             const ticketId = document.getElementById('ticket-id').value;
             const usuarioId = document.getElementById('ticket-usuario-id').value;
-            const descripcion = document.getElementById('ticket-descripcion').value;
+            const descripcion = document.getElementById('ticket-descripcion').value.trim();
             const prioridad = document.getElementById('ticket-prioridad').value;
             const estado = document.getElementById('ticket-estado').value;
             const tecnicoId = document.getElementById('ticket-tecnico-id').value;
+
+            // Validaciones
+            if (!validarDescripcionTicket(descripcion)) return;
+            
+            if (!usuarioId || usuarioId === '') {
+                showAlert('Debe seleccionar un usuario', 'error');
+                return;
+            }
 
             try {
                 if (ticketId) {
@@ -713,6 +1295,12 @@
                     if (descripcion) updateData.descripcion = descripcion;
                     if (prioridad) updateData.prioridad = prioridad;
                     if (estado) updateData.estado = estado;
+                    // Incluir tecnico_id siempre (0 para desasignar, número para asignar)
+                    if (tecnicoId === '' || tecnicoId === null || tecnicoId === undefined) {
+                        updateData.tecnico_id = 0; // 0 significa desasignar
+                    } else {
+                        updateData.tecnico_id = parseInt(tecnicoId);
+                    }
 
                     const response = await fetch(`${API_TICKETS}/${ticketId}`, {
                         method: 'PUT',
@@ -741,7 +1329,25 @@
                     });
 
                     if (response.ok) {
+                        const nuevoTicket = await response.json();
                         showAlert('Ticket creado exitosamente');
+                        
+                        // Si se seleccionó un técnico, asignarlo
+                        if (tecnicoId) {
+                            try {
+                                const assignResponse = await fetch(`${API_TICKETS}/${nuevoTicket.ticket_id}/asignar-tecnico`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ tecnico_id: parseInt(tecnicoId) })
+                                });
+                                if (assignResponse.ok) {
+                                    showAlert('Ticket creado y técnico asignado exitosamente');
+                                }
+                            } catch (error) {
+                                console.error('Error al asignar técnico:', error);
+                            }
+                        }
+                        
                         resetTicketForm();
                         loadTickets();
                     } else {
@@ -761,6 +1367,13 @@
                 const ticket = await response.json();
                 
                 document.getElementById('ticket-id').value = ticket.ticket_id;
+                // Asegurar que los dropdowns estén cargados
+                if (usuariosList.length === 0) {
+                    await loadUsuariosForTickets();
+                }
+                if (tecnicosList.length === 0) {
+                    await loadTecnicosForTickets();
+                }
                 document.getElementById('ticket-usuario-id').value = ticket.usuario_id;
                 document.getElementById('ticket-descripcion').value = ticket.descripcion;
                 document.getElementById('ticket-prioridad').value = ticket.prioridad;
@@ -770,35 +1383,12 @@
                 document.getElementById('ticket-submit-btn').textContent = 'Actualizar Ticket';
                 document.getElementById('ticket-cancel-btn').style.display = 'inline-block';
                 document.getElementById('ticket-estado-group').style.display = 'block';
+                document.getElementById('ticket-tecnico-group').style.display = 'block';
                 document.getElementById('ticket-usuario-id').disabled = true;
                 
                 document.getElementById('ticket-form').scrollIntoView({ behavior: 'smooth' });
             } catch (error) {
                 showAlert('Error al cargar ticket: ' + error.message, 'error');
-            }
-        }
-
-        // Asignar técnico
-        async function assignTechnician(id) {
-            const tecnicoId = prompt('Ingresa el ID del técnico a asignar:');
-            if (!tecnicoId) return;
-
-            try {
-                const response = await fetch(`${API_TICKETS}/${id}/asignar-tecnico`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tecnico_id: parseInt(tecnicoId) })
-                });
-
-                if (response.ok) {
-                    showAlert('Técnico asignado exitosamente');
-                    loadTickets();
-                } else {
-                    const error = await response.json();
-                    showAlert('Error: ' + (error.detail || 'Error al asignar técnico'), 'error');
-                }
-            } catch (error) {
-                showAlert('Error: ' + error.message, 'error');
             }
         }
 
@@ -831,11 +1421,75 @@
             document.getElementById('ticket-cancel-btn').style.display = 'none';
             document.getElementById('ticket-estado-group').style.display = 'none';
             document.getElementById('ticket-usuario-id').disabled = false;
+            // Recargar dropdowns
+            populateUsuarioDropdown();
+            populateTecnicoDropdown();
+        }
+
+        // Asignar técnico mejorado
+        async function assignTechnician(id) {
+            // Cargar técnicos primero
+            await loadTecnicosForTickets();
+            
+            if (tecnicosList.length === 0) {
+                showAlert('No hay técnicos disponibles', 'error');
+                return;
+            }
+
+            // Crear un modal simple
+            const tecnicoOptions = tecnicosList.map((t, i) => 
+                `${i + 1}. ${t.nombre} (${t.correo}) - ID: ${t.usuario_id}`
+            ).join('\n');
+            
+            const tecnicoIdStr = prompt(
+                'Seleccione el técnico a asignar:\n\n' + 
+                tecnicoOptions + 
+                '\n\nIngrese el ID del técnico:'
+            );
+            
+            if (!tecnicoIdStr || tecnicoIdStr.trim() === '') {
+                return;
+            }
+
+            const tecnicoId = parseInt(tecnicoIdStr.trim());
+            
+            if (isNaN(tecnicoId)) {
+                showAlert('ID de técnico inválido', 'error');
+                return;
+            }
+
+            // Verificar que el técnico existe en la lista
+            const tecnicoExiste = tecnicosList.some(t => t.usuario_id === tecnicoId);
+            if (!tecnicoExiste) {
+                showAlert('El ID ingresado no corresponde a un técnico válido', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_TICKETS}/${id}/asignar-tecnico`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tecnico_id: tecnicoId })
+                });
+
+                if (response.ok) {
+                    const ticketActualizado = await response.json();
+                    showAlert(`Técnico ${tecnicoId} asignado exitosamente al ticket ${id}`);
+                    loadTickets();
+                } else {
+                    const error = await response.json();
+                    showAlert('Error: ' + (error.detail || 'Error al asignar técnico'), 'error');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            }
         }
 
         // Cargar datos al iniciar
         window.onload = function() {
             loadUsuarios();
+            loadUsuariosForTickets();
+            loadTecnicosForTickets();
         };
     </script>
 </body>
