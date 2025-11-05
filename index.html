@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpDeskPro - Sistema de Gestión</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+        }
+
+        .tab.active {
+            background: white;
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-prioridad-baja {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-prioridad-media {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-prioridad-alta {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-prioridad-critica {
+            background: #dc3545;
+            color: white;
+        }
+
+        .badge-estado-abierto {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .badge-estado-en_proceso {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-estado-cerrado {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .badge-rol-usuario {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .badge-rol-tecnico {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-rol-admin {
+            background: #dc3545;
+            color: white;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎫 HelpDeskPro</h1>
+            <p>Sistema de Gestión de Incidencias</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('usuarios')">👥 Usuarios</div>
+            <div class="tab" onclick="switchTab('tickets')">🎫 Tickets</div>
+        </div>
+
+        <div class="content">
+            <!-- Alertas -->
+            <div id="alert" class="alert"></div>
+
+            <!-- TAB USUARIOS -->
+            <div id="usuarios-tab" class="tab-content active">
+                <!-- Crear Usuario -->
+                <div class="section">
+                    <h2>➕ Crear Usuario</h2>
+                    <form id="usuario-form">
+                        <input type="hidden" id="usuario-id" value="">
+                        <div class="form-group">
+                            <label for="usuario-nombre">Nombre:</label>
+                            <input type="text" id="usuario-nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="usuario-correo">Correo:</label>
+                            <input type="email" id="usuario-correo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="usuario-contrasena">Contraseña:</label>
+                            <input type="password" id="usuario-contrasena">
+                        </div>
+                        <div class="form-group">
+                            <label for="usuario-rol">Rol:</label>
+                            <select id="usuario-rol" required>
+                                <option value="usuario">Usuario</option>
+                                <option value="tecnico">Técnico</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="usuario-submit-btn">Crear Usuario</button>
+                            <button type="button" class="btn btn-secondary" onclick="resetUsuarioForm()" id="usuario-cancel-btn" style="display: none;">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Listar Usuarios -->
+                <div class="section">
+                    <h2>📋 Lista de Usuarios</h2>
+                    <button class="btn btn-primary" onclick="loadUsuarios()">🔄 Actualizar Lista</button>
+                    <div class="table-container">
+                        <table id="usuarios-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>Rol</th>
+                                    <th>Activo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usuarios-tbody">
+                                <tr><td colspan="6" class="loading">Cargando usuarios...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB TICKETS -->
+            <div id="tickets-tab" class="tab-content">
+                <!-- Crear Ticket -->
+                <div class="section">
+                    <h2>➕ Crear Ticket</h2>
+                    <form id="ticket-form">
+                        <input type="hidden" id="ticket-id" value="">
+                        <div class="form-group">
+                            <label for="ticket-usuario-id">ID Usuario:</label>
+                            <input type="number" id="ticket-usuario-id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ticket-descripcion">Descripción:</label>
+                            <textarea id="ticket-descripcion" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="ticket-prioridad">Prioridad:</label>
+                            <select id="ticket-prioridad" required>
+                                <option value="baja">Baja</option>
+                                <option value="media" selected>Media</option>
+                                <option value="alta">Alta</option>
+                                <option value="critica">Crítica</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="ticket-estado-group" style="display: none;">
+                            <label for="ticket-estado">Estado:</label>
+                            <select id="ticket-estado">
+                                <option value="abierto">Abierto</option>
+                                <option value="en_proceso">En Proceso</option>
+                                <option value="cerrado">Cerrado</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="ticket-tecnico-group">
+                            <label for="ticket-tecnico-id">ID Técnico (opcional):</label>
+                            <input type="number" id="ticket-tecnico-id">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="ticket-submit-btn">Crear Ticket</button>
+                            <button type="button" class="btn btn-secondary" onclick="resetTicketForm()" id="ticket-cancel-btn" style="display: none;">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Listar Tickets -->
+                <div class="section">
+                    <h2>📋 Lista de Tickets</h2>
+                    <button class="btn btn-primary" onclick="loadTickets()">🔄 Actualizar Lista</button>
+                    <div class="table-container">
+                        <table id="tickets-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario ID</th>
+                                    <th>Descripción</th>
+                                    <th>Prioridad</th>
+                                    <th>Estado</th>
+                                    <th>Técnico ID</th>
+                                    <th>Creado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tickets-tbody">
+                                <tr><td colspan="8" class="loading">Cargando tickets...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://127.0.0.1:8888';
+        const API_USUARIOS = `${API_BASE}/api/usuarios`;
+        const API_TICKETS = `${API_BASE}/api/tickets`;
+
+        // Cambiar de pestaña
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${tab}-tab`).classList.add('active');
+            
+            if (tab === 'usuarios') {
+                loadUsuarios();
+            } else {
+                loadTickets();
+            }
+        }
+
+        // Mostrar alerta
+        function showAlert(message, type = 'success') {
+            const alert = document.getElementById('alert');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        // ==================== USUARIOS ====================
+
+        // Cargar usuarios
+        async function loadUsuarios() {
+            try {
+                // Nota: Necesitas crear el endpoint GET /api/usuarios/ en tu API
+                const response = await fetch(`${API_BASE}/api/usuarios/`);
+                if (!response.ok) {
+                    throw new Error('Endpoint de usuarios no disponible. Necesitas crear el endpoint GET /api/usuarios/');
+                }
+                const usuarios = await response.json();
+                displayUsuarios(usuarios);
+            } catch (error) {
+                showAlert('Error al cargar usuarios: ' + error.message, 'error');
+                document.getElementById('usuarios-tbody').innerHTML = 
+                    '<tr><td colspan="6" class="loading">Error: ' + error.message + '</td></tr>';
+            }
+        }
+
+        // Mostrar usuarios
+        function displayUsuarios(usuarios) {
+            const tbody = document.getElementById('usuarios-tbody');
+            
+            if (!usuarios || usuarios.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="loading">No hay usuarios disponibles</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = usuarios.map(usuario => `
+                <tr>
+                    <td>${usuario.usuario_id || usuario.IDusuario || 'N/A'}</td>
+                    <td>${usuario.nombre}</td>
+                    <td>${usuario.correo}</td>
+                    <td><span class="badge badge-rol-${usuario.rol}">${usuario.rol.toUpperCase()}</span></td>
+                    <td>${usuario.activo ? '✅ Sí' : '❌ No'}</td>
+                    <td class="actions">
+                        <button class="btn btn-warning btn-sm" onclick="editUsuario(${usuario.usuario_id || usuario.IDusuario})">Editar</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUsuario(${usuario.usuario_id || usuario.IDusuario})">Eliminar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Crear/Actualizar usuario
+        document.getElementById('usuario-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const usuarioId = document.getElementById('usuario-id').value;
+            const nombre = document.getElementById('usuario-nombre').value;
+            const correo = document.getElementById('usuario-correo').value;
+            const contrasena = document.getElementById('usuario-contrasena').value;
+            const rol = document.getElementById('usuario-rol').value;
+
+            try {
+                if (usuarioId) {
+                    // Actualizar - solo enviar campos que tienen valor
+                    const data = {};
+                    if (nombre) data.nombre = nombre;
+                    if (correo) data.correo = correo;
+                    if (rol) data.rol = rol;
+                    if (contrasena) data.contrasena = contrasena;
+                    
+                    const response = await fetch(`${API_USUARIOS}/${usuarioId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        showAlert('Usuario actualizado exitosamente');
+                        resetUsuarioForm();
+                        loadUsuarios();
+                    } else {
+                        const error = await response.json();
+                        showAlert('Error: ' + (error.detail || 'Error al actualizar'), 'error');
+                    }
+                } else {
+                    // Crear
+                    if (!contrasena) {
+                        showAlert('La contraseña es requerida para crear un usuario', 'error');
+                        return;
+                    }
+                    
+                    const data = {
+                        nombre: nombre,
+                        correo: correo,
+                        contrasena: contrasena,
+                        rol: rol
+                    };
+                    
+                    const response = await fetch(`${API_USUARIOS}/`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        showAlert('Usuario creado exitosamente');
+                        resetUsuarioForm();
+                        loadUsuarios();
+                    } else {
+                        const error = await response.json();
+                        showAlert('Error: ' + (error.detail || 'Error al crear'), 'error');
+                    }
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            }
+        });
+
+        // Editar usuario
+        async function editUsuario(id) {
+            try {
+                const response = await fetch(`${API_USUARIOS}/${id}`);
+                if (!response.ok) throw new Error('Usuario no encontrado');
+                
+                const usuario = await response.json();
+                
+                document.getElementById('usuario-id').value = usuario.usuario_id || usuario.IDusuario;
+                document.getElementById('usuario-nombre').value = usuario.nombre;
+                document.getElementById('usuario-correo').value = usuario.correo;
+                document.getElementById('usuario-rol').value = usuario.rol;
+                document.getElementById('usuario-contrasena').required = false;
+                
+                document.getElementById('usuario-submit-btn').textContent = 'Actualizar Usuario';
+                document.getElementById('usuario-cancel-btn').style.display = 'inline-block';
+                
+                document.getElementById('usuario-form').scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                showAlert('Error al cargar usuario: ' + error.message, 'error');
+            }
+        }
+
+        // Eliminar usuario
+        async function deleteUsuario(id) {
+            if (!confirm('¿Estás seguro de eliminar este usuario?')) return;
+
+            try {
+                const response = await fetch(`${API_USUARIOS}/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showAlert('Usuario eliminado exitosamente');
+                    loadUsuarios();
+                } else {
+                    const error = await response.json();
+                    showAlert('Error: ' + (error.detail || 'Error al eliminar'), 'error');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            }
+        }
+
+        // Resetear formulario usuario
+        function resetUsuarioForm() {
+            document.getElementById('usuario-form').reset();
+            document.getElementById('usuario-id').value = '';
+            document.getElementById('usuario-submit-btn').textContent = 'Crear Usuario';
+            document.getElementById('usuario-cancel-btn').style.display = 'none';
+            document.getElementById('usuario-contrasena').required = true;
+        }
+
+        // ==================== TICKETS ====================
+
+        // Cargar tickets
+        async function loadTickets() {
+            try {
+                const response = await fetch(`${API_TICKETS}/`);
+                const tickets = await response.json();
+                displayTickets(tickets);
+            } catch (error) {
+                showAlert('Error al cargar tickets: ' + error.message, 'error');
+                document.getElementById('tickets-tbody').innerHTML = 
+                    '<tr><td colspan="8" class="loading">Error al cargar tickets</td></tr>';
+            }
+        }
+
+        // Mostrar tickets
+        function displayTickets(tickets) {
+            const tbody = document.getElementById('tickets-tbody');
+            
+            if (!tickets || tickets.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="loading">No hay tickets disponibles</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = tickets.map(ticket => `
+                <tr>
+                    <td>${ticket.ticket_id}</td>
+                    <td>${ticket.usuario_id}</td>
+                    <td>${ticket.descripcion.substring(0, 50)}${ticket.descripcion.length > 50 ? '...' : ''}</td>
+                    <td><span class="badge badge-prioridad-${ticket.prioridad}">${ticket.prioridad.toUpperCase()}</span></td>
+                    <td><span class="badge badge-estado-${ticket.estado}">${ticket.estado.replace('_', ' ').toUpperCase()}</span></td>
+                    <td>${ticket.tecnico_id || 'Sin asignar'}</td>
+                    <td>${new Date(ticket.created_at).toLocaleString()}</td>
+                    <td class="actions">
+                        <button class="btn btn-warning btn-sm" onclick="editTicket(${ticket.ticket_id})">Editar</button>
+                        <button class="btn btn-success btn-sm" onclick="assignTechnician(${ticket.ticket_id})">Asignar Técnico</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteTicket(${ticket.ticket_id})">Eliminar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Crear/Actualizar ticket
+        document.getElementById('ticket-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const ticketId = document.getElementById('ticket-id').value;
+            const usuarioId = document.getElementById('ticket-usuario-id').value;
+            const descripcion = document.getElementById('ticket-descripcion').value;
+            const prioridad = document.getElementById('ticket-prioridad').value;
+            const estado = document.getElementById('ticket-estado').value;
+            const tecnicoId = document.getElementById('ticket-tecnico-id').value;
+
+            try {
+                if (ticketId) {
+                    // Actualizar
+                    const updateData = {};
+                    if (descripcion) updateData.descripcion = descripcion;
+                    if (prioridad) updateData.prioridad = prioridad;
+                    if (estado) updateData.estado = estado;
+
+                    const response = await fetch(`${API_TICKETS}/${ticketId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updateData)
+                    });
+
+                    if (response.ok) {
+                        showAlert('Ticket actualizado exitosamente');
+                        resetTicketForm();
+                        loadTickets();
+                    } else {
+                        const error = await response.json();
+                        showAlert('Error: ' + (error.detail || 'Error al actualizar'), 'error');
+                    }
+                } else {
+                    // Crear
+                    const response = await fetch(`${API_TICKETS}/`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            usuario_id: parseInt(usuarioId),
+                            descripcion: descripcion,
+                            prioridad: prioridad
+                        })
+                    });
+
+                    if (response.ok) {
+                        showAlert('Ticket creado exitosamente');
+                        resetTicketForm();
+                        loadTickets();
+                    } else {
+                        const error = await response.json();
+                        showAlert('Error: ' + (error.detail || 'Error al crear'), 'error');
+                    }
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            }
+        });
+
+        // Editar ticket
+        async function editTicket(id) {
+            try {
+                const response = await fetch(`${API_TICKETS}/${id}`);
+                const ticket = await response.json();
+                
+                document.getElementById('ticket-id').value = ticket.ticket_id;
+                document.getElementById('ticket-usuario-id').value = ticket.usuario_id;
+                document.getElementById('ticket-descripcion').value = ticket.descripcion;
+                document.getElementById('ticket-prioridad').value = ticket.prioridad;
+                document.getElementById('ticket-estado').value = ticket.estado;
+                document.getElementById('ticket-tecnico-id').value = ticket.tecnico_id || '';
+                
+                document.getElementById('ticket-submit-btn').textContent = 'Actualizar Ticket';
+                document.getElementById('ticket-cancel-btn').style.display = 'inline-block';
+                document.getElementById('ticket-estado-group').style.display = 'block';
+                document.getElementById('ticket-usuario-id').disabled = true;
+                
+                document.getElementById('ticket-form').scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                showAlert('Error al cargar ticket: ' + error.message, 'error');
+            }
+        }
+
+        // Asignar técnico
+        async function assignTechnician(id) {
+            const tecnicoId = prompt('Ingresa el ID del técnico a asignar:');
+            if (!tecnicoId) return;
+
+            try {
+                const response = await fetch(`${API_TICKETS}/${id}/asignar-tecnico`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tecnico_id: parseInt(tecnicoId) })
+                });
+
+                if (response.ok) {
+                    showAlert('Técnico asignado exitosamente');
+                    loadTickets();
+                } else {
+                    const error = await response.json();
+                    showAlert('Error: ' + (error.detail || 'Error al asignar técnico'), 'error');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            }
+        }
+
+        // Eliminar ticket
+        async function deleteTicket(id) {
+            if (!confirm('¿Estás seguro de eliminar este ticket?')) return;
+
+            try {
+                const response = await fetch(`${API_TICKETS}/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showAlert('Ticket eliminado exitosamente');
+                    loadTickets();
+                } else {
+                    const error = await response.json();
+                    showAlert('Error: ' + (error.detail || 'Error al eliminar'), 'error');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            }
+        }
+
+        // Resetear formulario ticket
+        function resetTicketForm() {
+            document.getElementById('ticket-form').reset();
+            document.getElementById('ticket-id').value = '';
+            document.getElementById('ticket-submit-btn').textContent = 'Crear Ticket';
+            document.getElementById('ticket-cancel-btn').style.display = 'none';
+            document.getElementById('ticket-estado-group').style.display = 'none';
+            document.getElementById('ticket-usuario-id').disabled = false;
+        }
+
+        // Cargar datos al iniciar
+        window.onload = function() {
+            loadUsuarios();
+        };
+    </script>
+</body>
+</html>
